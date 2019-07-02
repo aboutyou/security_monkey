@@ -17,12 +17,16 @@ MAINTAINER Netflix Open Source Development <talent@netflix.com>
 
 ENV SECURITY_MONKEY_VERSION=v1.1.1
 RUN apt-get update &&\
-  apt-get install -y curl git sudo apt-transport-https gnupg &&\
-  curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
-  curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list && \
-  apt-get update &&\
-  apt-get install -y -q dart &&\
-  rm -rf /var/lib/apt/lists/*
+  apt-get install -y curl git sudo unzip
+  # curl https://dl-ssl.google.com/linux/linux_signing_key.pub | apt-key add - &&\
+  # curl https://storage.googleapis.com/download.dartlang.org/linux/debian/dart_stable.list > /etc/apt/sources.list.d/dart_stable.list && \
+  # apt-get update &&\
+  # apt-get install -y -q dart=1.24.* &&\
+  # rm -rf /var/lib/apt/lists/*
+RUN curl -s https://storage.googleapis.com/dart-archive/channels/stable/release/1.24.3/sdk/dartsdk-linux-x64-release.zip > dartsdk.zip
+RUN unzip -qq /dartsdk.zip -d /opt/google
+RUN rm /dartsdk.zip
+RUN mv /opt/google/dart-sdk* /opt/google/dart
 
 RUN cd /usr/local/src &&\
   mkdir -p security_monkey
